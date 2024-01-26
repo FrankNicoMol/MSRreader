@@ -10,4 +10,6 @@ Package for reading and importing STED images in Python
 
 ## MSR reader:
 
-`image_utils/msr_reader.py`
+`image_utils/msr_reader.py`  
+
+https://imspectordocs.readthedocs.io/en/latest/fileformat.html
