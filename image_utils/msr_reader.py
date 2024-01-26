@@ -4,8 +4,8 @@
 # MSR format description: 
 #   https://imspectordocs.readthedocs.io/en/latest/fileformat.html
 
-from .image_settings import ImageSettings, Gating
-from .image_plus import ImagePlus, AXES
+from image_utils.image_settings import ImageSettings, Gating
+from image_utils.image_plus import ImagePlus, AXES
 
 import numpy as np
 import zlib
@@ -126,7 +126,7 @@ def _read_stack(f):
             key = _len_string_decode(f)
             val = _len_string_decode(f)
             tag_dict[key] = val
-    if format_version >= 6:
+    if format_version >= 6 and num_chunk_positions != 0:
         chunk_positions = [(_ulong(f), _ulong(f)) for _ in range(num_chunk_positions)]
 
         pos, idx = 0, 0
@@ -149,6 +149,7 @@ def _read_stack(f):
     # Parse data (pad with zeros if incomplete, i.e. measurement not finished)
     if compression_type == 1:
         data = zlib.decompress(data)
+
     data = np.frombuffer(data, '<h')
 
     finished = data.shape[0] == np.prod(res[:rank])
